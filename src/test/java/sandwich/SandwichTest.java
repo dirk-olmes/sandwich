@@ -11,12 +11,12 @@ public class SandwichTest extends Object
 	public void simpleSandwich()
 	{
 		// @formatter:off
-		Sandwich sandwich = Sandwich.make("white", cfg -> cfg
+		Sandwich sandwich = SandwichBuilder.withBread("white")
 			.withMeat("bacon")
 			.noCheese()
 			.addVeggie("salad")
 			.close()
-		);
+			.create();
 		// @formatter:on
 
 		assertEquals("white", sandwich.getBread());
@@ -25,7 +25,7 @@ public class SandwichTest extends Object
 	}
 
 	@Test
-	public void lambdaAccess()
+	public void localVariableFromBuilder()
 	{
 		String veggie = "salad";
 		if ((System.currentTimeMillis() % 2) == 0)
@@ -33,15 +33,13 @@ public class SandwichTest extends Object
 			veggie = "lettuce";
 		}
 
-		final String evilHackToCircumventLambdaScoping = veggie;
-
 		// @formatter:off
-		Sandwich sandwich = Sandwich.make("white", cfg -> cfg
+		Sandwich sandwich = SandwichBuilder.withBread("white")
 			.withMeat("wheat")
 			.noCheese()
-			.addVeggie(evilHackToCircumventLambdaScoping)
+			.addVeggie(veggie)
 			.close()
-		);
+			.create();
 		// @formatter:on
 
 		assertEquals(veggie, sandwich.getVegetables().get(0));
